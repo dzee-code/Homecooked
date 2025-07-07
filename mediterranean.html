@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mediterranean Sun | Recipes from the Blue Coast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f8f4e9;
+            font-family: 'Montserrat', sans-serif;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header with Mediterranean sea gradient */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('https://images.unsplash.com/photo-1519046904884-53103b34b206');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 6rem 0;
+            margin-bottom: 3rem;
+            border-bottom: 5px solid #e6b422;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #f5d76e;
+        }
+        
+        /* Recipe Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 5rem;
+        }
+        
+        .recipe-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #4a89dc;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(74, 137, 220, 0.2);
+        }
+        
+        .recipe-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        
+        .recipe-content {
+            padding: 2rem;
+        }
+        
+        .recipe-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: #3a539b;
+            margin-bottom: 0.8rem;
+            font-size: 1.8rem;
+        }
+        
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #6c7a89;
+        }
+        
+        .recipe-details {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .recipe-country {
+            font-weight: 600;
+            color: #e6b422;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        .poem {
+            font-family: 'Dancing Script', cursive;
+            color: #6c7a89;
+            margin: 1.5rem 0;
+            line-height: 1.5;
+            font-size: 1.2rem;
+        }
+        
+        .recipe-btn {
+            background: #4a89dc;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .recipe-btn:hover {
+            background: #3a539b;
+            transform: scale(1.05);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 3rem;
+            width: 85%;
+            max-width: 800px;
+            border-radius: 8px;
+            position: relative;
+            border-top: 6px solid #4a89dc;
+        }
+        
+        .close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #6c7a89;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: #3a539b;
+        }
+        
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            color: #3a539b;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .modal-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            color: #6c7a89;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .modal-poem {
+            font-family: 'Dancing Script', cursive;
+            color: #e6b422;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 3px solid #e6b422;
+        }
+        
+        .modal-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .modal-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: #3a539b;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e6b422;
+            padding-bottom: 0.5rem;
+        }
+        
+        .ingredients-list, .steps-list {
+            list-style-type: none;
+        }
+        
+        .ingredients-list li, .steps-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #e0e0e0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .ingredients-list li::before {
+            content: "•";
+            color: #4a89dc;
+            font-weight: bold;
+            display: inline-block;
+            width: 1.5em;
+            margin-left: -1.5em;
+            font-size: 1.2rem;
+        }
+        
+        .steps-list li::before {
+            content: counter(step);
+            counter-increment: step;
+            background: #4a89dc;
+            color: white;
+            font-weight: bold;
+            width: 2em;
+            height: 2em;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .steps-list {
+            counter-reset: step;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .tagline {
+                font-size: 1.8rem;
+            }
+            
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 2rem 1.5rem;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Mediterranean Sun</h1>
+            <p class="tagline">Where olive trees whisper and the sea sings</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="recipe-grid">
+            <!-- Greek -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1607330289024-1535c6b4e1c1" alt="Moussaka" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Moussaka</h2>
+                    <div class="recipe-meta">
+                        <div class="recipe-details">
+                            <span class="time">⏱ 2 hours</span>
+                            <span class="difficulty">⭐⭐ Medium</span>
+                        </div>
+                        <span class="recipe-country">Greece</span>
+                    </div>
+                    <p class="poem">"Layers of eggplant, spiced meat so fine,<br>Topped with béchamel—heaven divine!"</p>
+                    <button class="recipe-btn" onclick="showRecipe('moussaka')">View Recipe</button>
+                </div>
+            </article>
+
+            <!-- Italian -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1590947132387-155cc02f3212" alt="Pasta Puttanesca" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Pasta Puttanesca</h2>
+                    <div class="recipe-meta">
+                        <div class="recipe-details">
+                            <span class="time">⏱ 30 mins</span>
+                            <span class="difficulty">⭐ Easy</span>
+                        </div>
+                        <span class="recipe-country">Italy</span>
+                    </div>
+                    <p class="poem">"Olives, capers, anchovy's kiss,<br>Tomato sauce you can't dismiss."</p>
+                    <button class="recipe-btn" onclick="showRecipe('puttanesca')">View Recipe</button>
+                </div>
+            </article>
+
+            <!-- Spanish -->
+            <article class="recipe-card">
+                <img src="data:image/webp;base64,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" alt="Paella" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Paella Valenciana</h2>
+                    <div class="recipe-meta">
+                        <div class="recipe-details">
+                            <span class="time">⏱ 1.5 hours</span>
+                            <span class="difficulty">⭐⭐ Medium</span>
+                        </div>
+                        <span class="recipe-country">Spain</span>
+                    </div>
+                    <p class="poem">"Saffron gold and socarrat crust,<br>Seafood, chicken—cook with trust!"</p>
+                    <button class="recipe-btn" onclick="showRecipe('paella')">View Recipe</button>
+                </div>
+            </article>
+
+            <!-- Lebanese -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1512003867696-6d5ce6835040" alt="Fattoush" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Fattoush Salad</h2>
+                    <div class="recipe-meta">
+                        <div class="recipe-details">
+                            <span class="time">⏱ 25 mins</span>
+                            <span class="difficulty">⭐ Easy</span>
+                        </div>
+                        <span class="recipe-country">Lebanon</span>
+                    </div>
+                    <p class="poem">"Crisp bread, fresh herbs in dance,<br>Pomegranate molasses romance."</p>
+                    <button class="recipe-btn" onclick="showRecipe('fattoush')">View Recipe</button>
+                </div>
+            </article>
+
+            <!-- Turkish -->
+            <article class="recipe-card">
+                <img src="https://tse3.mm.bing.net/th/id/OIP.eAkMyvf8GK76aav4oK0ePAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Imam Bayildi" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Imam Bayildi</h2>
+                    <div class="recipe-meta">
+                        <div class="recipe-details">
+                            <span class="time">⏱ 1.5 hours</span>
+                            <span class="difficulty">⭐⭐ Medium</span>
+                        </div>
+                        <span class="recipe-country">Turkey</span>
+                    </div>
+                    <p class="poem">"Eggplant stuffed with onion's sweet,<br>Olive oil makes this dish complete."</p>
+                    <button class="recipe-btn" onclick="showRecipe('imam')">View Recipe</button>
+                </div>
+            </article>
+
+            <!-- Add 15+ more recipes -->
+        </div>
+    </main>
+
+    <!-- Recipe Modal -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modal-title">Recipe Title</h2>
+            <p class="modal-subtitle" id="modal-subtitle"></p>
+            <p class="modal-poem" id="modal-poem"></p>
+            
+            <div class="modal-section">
+                <h3>Ingredients</h3>
+                <ul class="ingredients-list" id="modal-ingredients"></ul>
+            </div>
+            
+            <div class="modal-section">
+                <h3>Preparation</h3>
+                <ol class="steps-list" id="modal-steps"></ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 20+ Mediterranean Recipes Data
+        const recipes = {
+            moussaka: {
+                title: "Moussaka",
+                subtitle: "Greece's legendary layered casserole",
+                poem: "Layers of eggplant, spiced meat so fine,\nTopped with béchamel—heaven divine!",
+                ingredients: [
+                    "2 large eggplants, sliced",
+                    "1 lb ground lamb or beef",
+                    "1 onion, chopped",
+                    "2 cloves garlic, minced",
+                    "1 can (14oz) crushed tomatoes",
+                    "1 tsp cinnamon",
+                    "1/2 tsp allspice",
+                    "4 tbsp olive oil",
+                    "For béchamel: 4 tbsp butter, 4 tbsp flour, 2 cups milk, 2 eggs, 1/2 cup grated cheese"
+                ],
+                steps: [
+                    "Salt eggplant slices; let sit 30 mins then pat dry.",
+                    "Brown meat with onion and garlic; add tomatoes and spices.",
+                    "Fry eggplant until golden; layer in baking dish.",
+                    "Make béchamel: melt butter, whisk in flour, slowly add milk, then eggs and cheese.",
+                    "Assemble: eggplant → meat → eggplant → béchamel.",
+                    "Bake at 350°F (180°C) for 45 mins until golden."
+                ],
+                country: "Greece"
+            },
+            puttanesca: {
+                title: "Pasta Puttanesca",
+                subtitle: "Italy's bold fisherman's pasta",
+                poem: "Olives, capers, anchovy's kiss,\nTomato sauce you can't dismiss.",
+                ingredients: [
+                    "1 lb spaghetti",
+                    "3 cloves garlic, minced",
+                    "4 anchovy fillets",
+                    "1/2 cup Kalamata olives, pitted",
+                    "2 tbsp capers",
+                    "1 can (28oz) crushed tomatoes",
+                    "1/2 tsp red pepper flakes",
+                    "1/4 cup parsley, chopped",
+                    "3 tbsp olive oil"
+                ],
+                steps: [
+                    "Cook pasta al dente; reserve 1 cup pasta water.",
+                    "Sauté garlic and anchovies in oil until dissolved.",
+                    "Add olives, capers, tomatoes, and pepper flakes; simmer 15 mins.",
+                    "Toss pasta with sauce; add pasta water as needed.",
+                    "Garnish with parsley and extra olive oil."
+                ],
+                country: "Italy"
+            },
+            paella: {
+                title: "Paella Valenciana",
+                subtitle: "Spain's iconic saffron rice",
+                poem: "Saffron gold and socarrat crust,\nSeafood, chicken—cook with trust!",
+                ingredients: [
+                    "2 cups Bomba rice",
+                    "4 cups chicken stock",
+                    "1/2 tsp saffron threads",
+                    "1 lb chicken thighs",
+                    "1/2 lb rabbit (or more chicken)",
+                    "1 green bell pepper, sliced",
+                    "1 tomato, grated",
+                    "1 cup green beans",
+                    "1/2 cup lima beans",
+                    "1 tsp smoked paprika",
+                    "3 tbsp olive oil"
+                ],
+                steps: [
+                    "Steep saffron in warm stock.",
+                    "Brown meats in paella pan; remove and set aside.",
+                    "Sauté vegetables in same pan; add grated tomato.",
+                    "Add rice, paprika, and stir to coat.",
+                    "Pour in stock; arrange meats on top; cook uncovered 20 mins.",
+                    "Rest 5 mins before serving."
+                ],
+                country: "Spain"
+            },
+            fattoush: {
+                title: "Fattoush Salad",
+                subtitle: "Lebanon's crispy bread salad",
+                poem: "Crisp bread, fresh herbs in dance,\nPomegranate molasses romance.",
+                ingredients: [
+                    "4 cups mixed greens (romaine, mint, parsley)",
+                    "2 pita breads, toasted and broken",
+                    "1 cucumber, diced",
+                    "2 tomatoes, diced",
+                    "1/2 red onion, thinly sliced",
+                    "1/4 cup radishes, sliced",
+                    "For dressing: 1/4 cup olive oil, 2 tbsp lemon juice, 1 tbsp pomegranate molasses, 1 tsp sumac, 1 garlic clove"
+                ],
+                steps: [
+                    "Combine all vegetables in large bowl.",
+                    "Whisk dressing ingredients; toss with salad.",
+                    "Add pita pieces just before serving.",
+                    "Sprinkle with extra sumac."
+                ],
+                country: "Lebanon"
+            },
+            imam: {
+                title: "Imam Bayildi",
+                subtitle: "Turkey's famous stuffed eggplant",
+                poem: "Eggplant stuffed with onion's sweet,\nOlive oil makes this dish complete.",
+                ingredients: [
+                    "4 small eggplants",
+                    "2 onions, thinly sliced",
+                    "4 tomatoes, diced",
+                    "4 garlic cloves, minced",
+                    "1/2 cup parsley, chopped",
+                    "1 tsp sugar",
+                    "1/2 cup olive oil",
+                    "1 lemon, juiced"
+                ],
+                steps: [
+                    "Peel alternating strips on eggplants; salt and rinse.",
+                    "Fry eggplants until soft; drain on paper towels.",
+                    "Sauté onions until caramelized; add tomatoes, garlic, parsley, sugar.",
+                    "Stuff eggplants; place in baking dish.",
+                    "Mix oil and lemon juice; pour over eggplants.",
+                    "Bake at 350°F (180°C) for 45 mins."
+                ],
+                country: "Turkey"
+            }
+            // Add 15+ more recipes...
+        };
+
+        // Modal functions
+        function showRecipe(recipeId) {
+            const recipe = recipes[recipeId];
+            document.getElementById('modal-title').textContent = recipe.title;
+            document.getElementById('modal-subtitle').textContent = `${recipe.subtitle} • ${recipe.country}`;
+            document.getElementById('modal-poem').innerHTML = recipe.poem.replace(/\n/g, '<br>');
+            
+            // Populate ingredients
+            const ingredientsList = document.getElementById('modal-ingredients');
+            ingredientsList.innerHTML = recipe.ingredients.map(ing => `<li>${ing}</li>`).join('');
+            
+            // Populate steps
+            const stepsList = document.getElementById('modal-steps');
+            stepsList.innerHTML = recipe.steps.map(step => `<li>${step}</li>`).join('');
+            
+            // Show modal
+            document.getElementById('recipeModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('recipeModal').style.display = "none";
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('recipeModal')) {
+                closeModal();
+            }
+        };
+    </script>
+</body>
+</html>

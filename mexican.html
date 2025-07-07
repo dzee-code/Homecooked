@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Sabores de México! | Traditional Mexican Recipes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@400;600&family=Source+Serif+Pro&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #f8f1e9;
+            font-family: 'Poppins', sans-serif;
+            color: #3a2e26;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header with Mexican pattern */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1513456852971-30be0b8df970');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            border-bottom: 5px solid #e63c3c;
+        }
+        
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 4rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+        
+        .tagline {
+            font-family: 'Source Serif Pro', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+        }
+        
+        /* Recipe Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+        
+        .recipe-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #e63c3c;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(230, 60, 60, 0.2);
+        }
+        
+        .recipe-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        
+        .recipe-content {
+            padding: 1.8rem;
+        }
+        
+        .recipe-content h2 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: #e63c3c;
+            margin-bottom: 0.8rem;
+            font-size: 1.8rem;
+        }
+        
+        .recipe-details {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            color: #6b5b4d;
+        }
+        
+        .heat-level {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .poem {
+            font-family: 'Source Serif Pro', serif;
+            font-style: italic;
+            color: #6b5b4d;
+            margin: 1rem 0;
+            line-height: 1.5;
+            font-size: 1.1rem;
+        }
+        
+        .recipe-btn {
+            background: #e63c3c;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        .recipe-btn:hover {
+            background: #c42a2a;
+            transform: scale(1.05);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 3rem;
+            width: 85%;
+            max-width: 800px;
+            border-radius: 10px;
+            position: relative;
+            border-top: 6px solid #e63c3c;
+        }
+        
+        .close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #6b5b4d;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: #e63c3c;
+        }
+        
+        .modal-title {
+            font-family: 'Cinzel Decorative', cursive;
+            color: #e63c3c;
+            margin-bottom: 1rem;
+            font-size: 2.2rem;
+        }
+        
+        .modal-subtitle {
+            font-family: 'Source Serif Pro', serif;
+            color: #6b5b4d;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        
+        .modal-poem {
+            font-family: 'Source Serif Pro', serif;
+            font-style: italic;
+            color: #e63c3c;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            padding-left: 1rem;
+            border-left: 3px solid #e63c3c;
+        }
+        
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+        
+        .modal-section h3 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: #3a2e26;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e63c3c;
+            padding-bottom: 0.5rem;
+        }
+        
+        .ingredients-list, .steps-list {
+            list-style-type: none;
+        }
+        
+        .ingredients-list li, .steps-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px dashed #ddd;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .ingredients-list li::before {
+            content: "•";
+            color: #e63c3c;
+            font-weight: bold;
+            display: inline-block;
+            width: 1.5em;
+            margin-left: -1.5em;
+        }
+        
+        .steps-list li::before {
+            content: counter(step);
+            counter-increment: step;
+            background: #e63c3c;
+            color: white;
+            font-weight: bold;
+            width: 1.8em;
+            height: 1.8em;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .steps-list {
+            counter-reset: step;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .tagline {
+                font-size: 1.4rem;
+            }
+            
+            .recipe-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 2rem 1.5rem;
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>¡Sabores de México!</h1>
+            <p class="tagline">Recetas tradicionales con alma</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="recipe-grid">
+            <!-- Recipe 1: Tacos al Pastor -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1615870216519-2f9fa5753765" alt="Tacos al Pastor" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Tacos al Pastor</h2>
+                    <div class="recipe-details">
+                        <span class="time">⏱ 4 hours (marinade)</span>
+                        <span class="difficulty">⭐⭐ Medium</span>
+                        <span class="heat-level">🌶️🌶️</span>
+                    </div>
+                    <p class="poem">"Marinated pork on vertical spit,<br>Pineapple crowns this perfect fit."</p>
+                    <button class="recipe-btn" onclick="showRecipe('alpastor')">Ver Receta</button>
+                </div>
+            </article>
+
+            <!-- Recipe 2: Mole Poblano -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0" alt="Mole Poblano" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Mole Poblano</h2>
+                    <div class="recipe-details">
+                        <span class="time">⏱ 3 hours</span>
+                        <span class="difficulty">⭐⭐⭐ Hard</span>
+                        <span class="heat-level">🌶️🌶️</span>
+                    </div>
+                    <p class="poem">"Chocolate and chiles unite,<br>Complex sauce brings pure delight."</p>
+                    <button class="recipe-btn" onclick="showRecipe('mole')">Ver Receta</button>
+                </div>
+            </article>
+
+            <!-- Recipe 3: Chiles en Nogada -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1626804475297-96a1b8b5d10f" alt="Chiles en Nogada" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Chiles en Nogada</h2>
+                    <div class="recipe-details">
+                        <span class="time">⏱ 2.5 hours</span>
+                        <span class="difficulty">⭐⭐⭐ Hard</span>
+                        <span class="heat-level">🌶️</span>
+                    </div>
+                    <p class="poem">"Poblano's pride in colors bright,<br>Walnut sauce and pomegranite."</p>
+                    <button class="recipe-btn" onclick="showRecipe('nogada')">Ver Receta</button>
+                </div>
+            </article>
+
+            <!-- Recipe 4: Pozole -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1601050690117-64b6d2a4c2a3" alt="Pozole" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Pozole Rojo</h2>
+                    <div class="recipe-details">
+                        <span class="time">⏱ 4 hours</span>
+                        <span class="difficulty">⭐⭐ Medium</span>
+                        <span class="heat-level">🌶️🌶️🌶️</span>
+                    </div>
+                    <p class="poem">"Hominy stew with pork so fine,<br>Topped with radish, lime, and thyme."</p>
+                    <button class="recipe-btn" onclick="showRecipe('pozole')">Ver Receta</button>
+                </div>
+            </article>
+
+            <!-- Recipe 5: Tamales -->
+            <article class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1605870443990-30d2deb77b91" alt="Tamales" class="recipe-img">
+                <div class="recipe-content">
+                    <h2>Tamales</h2>
+                    <div class="recipe-details">
+                        <span class="time">⏱ 3 hours</span>
+                        <span class="difficulty">⭐⭐ Medium</span>
+                        <span class="heat-level">🌶️ (varies)</span>
+                    </div>
+                    <p class="poem">"Masa wrapped in corn husk tight,<br>Steamed to fluffy, pure delight."</p>
+                    <button class="recipe-btn" onclick="showRecipe('tamales')">Ver Receta</button>
+                </div>
+            </article>
+
+            <!-- Add 15+ more recipes -->
+        </div>
+    </main>
+
+    <!-- Recipe Modal -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 class="modal-title" id="modal-title">Recipe Title</h2>
+            <p class="modal-subtitle" id="modal-subtitle"></p>
+            <p class="modal-poem" id="modal-poem"></p>
+            
+            <div class="modal-section">
+                <h3>Ingredientes</h3>
+                <ul class="ingredients-list" id="modal-ingredients"></ul>
+            </div>
+            
+            <div class="modal-section">
+                <h3>Preparación</h3>
+                <ol class="steps-list" id="modal-steps"></ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 20+ Mexican Recipes Data
+        const recipes = {
+            alpastor: {
+                title: "Tacos al Pastor",
+                subtitle: "The iconic spit-grilled pork tacos",
+                poem: "Marinated pork on vertical spit,\nPineapple crowns this perfect fit.",
+                ingredients: [
+                    "2 lbs pork shoulder, thinly sliced",
+                    "3 guajillo chiles, seeded",
+                    "2 ancho chiles, seeded",
+                    "1/2 cup pineapple juice",
+                    "1/4 cup white vinegar",
+                    "3 garlic cloves",
+                    "1 tsp cumin",
+                    "1 tsp oregano",
+                    "1/2 tsp cloves",
+                    "Corn tortillas",
+                    "Fresh pineapple slices",
+                    "Cilantro, onion, lime for serving"
+                ],
+                steps: [
+                    "Blend all marinade ingredients until smooth.",
+                    "Marinate pork for at least 4 hours (best overnight).",
+                    "Stack meat on vertical rotisserie (or grill pan).",
+                    "Cook while basting with marinade and pineapple juice.",
+                    "Slice thin and serve on tortillas with toppings."
+                ],
+                region: "Mexico City",
+                heat: "🌶️🌶️"
+            },
+            mole: {
+                title: "Mole Poblano",
+                subtitle: "Mexico's famous complex sauce",
+                poem: "Chocolate and chiles unite,\nComplex sauce brings pure delight.",
+                ingredients: [
+                    "5 mulato chiles",
+                    "5 ancho chiles",
+                    "2 pasilla chiles",
+                    "1/2 cup sesame seeds",
+                    "1/2 cup almonds",
+                    "1/4 cup raisins",
+                    "1 plantain, sliced",
+                    "1 onion, quartered",
+                    "3 garlic cloves",
+                    "2 tomatoes",
+                    "1/4 cup pumpkin seeds",
+                    "1 tsp cinnamon",
+                    "1/2 tsp cloves",
+                    "1/2 tsp anise",
+                    "1 tablet Mexican chocolate",
+                    "4 cups chicken broth"
+                ],
+                steps: [
+                    "Toast and rehydrate all chiles; reserve liquid.",
+                    "Separately toast nuts, seeds, and spices.",
+                    "Fry plantain and onion until caramelized.",
+                    "Blend all ingredients with some broth until smooth.",
+                    "Strain and simmer for 2 hours, stirring frequently.",
+                    "Serve over turkey or chicken."
+                ],
+                region: "Puebla",
+                heat: "🌶️🌶️"
+            },
+            nogada: {
+                title: "Chiles en Nogada",
+                subtitle: "Patriotic stuffed peppers",
+                poem: "Poblano's pride in colors bright,\nWalnut sauce and pomegranite.",
+                ingredients: [
+                    "6 poblano peppers",
+                    "1 lb ground pork",
+                    "1 apple, diced",
+                    "1 pear, diced",
+                    "1 peach, diced",
+                    "1/2 cup pecans",
+                    "1/4 cup almonds",
+                    "1/4 cup raisins",
+                    "1 tsp cinnamon",
+                    "2 cups walnuts",
+                    "1 cup Mexican cream",
+                    "1/2 cup sherry",
+                    "Pomegranate seeds",
+                    "Parsley"
+                ],
+                steps: [
+                    "Char and peel poblanos; make slit to remove seeds.",
+                    "Cook pork with fruits, nuts, and spices for filling.",
+                    "Stuff peppers and set aside.",
+                    "Blend walnuts, cream, and sherry for sauce.",
+                    "Cover peppers with sauce and garnish."
+                ],
+                region: "Puebla",
+                heat: "🌶️"
+            },
+            pozole: {
+                title: "Pozole Rojo",
+                subtitle: "Hearty hominy stew",
+                poem: "Hominy stew with pork so fine,\nTopped with radish, lime, and thyme.",
+                ingredients: [
+                    "2 lbs pork shoulder",
+                    "1 lb pork neck bones",
+                    "4 cups white hominy",
+                    "5 guajillo chiles",
+                    "3 ancho chiles",
+                    "1 onion, quartered",
+                    "4 garlic cloves",
+                    "1 tbsp oregano",
+                    "2 bay leaves",
+                    "For serving: radish, cabbage, lime, oregano"
+                ],
+                steps: [
+                    "Simmer pork and bones for 2 hours; reserve broth.",
+                    "Toast and blend chiles with onion and garlic.",
+                    "Strain chile sauce into broth; add hominy.",
+                    "Shred pork and return to pot; simmer 1 hour.",
+                    "Serve with toppings."
+                ],
+                region: "Jalisco",
+                heat: "🌶️🌶️🌶️"
+            },
+            tamales: {
+                title: "Tamales",
+                subtitle: "Steamed masa delights",
+                poem: "Masa wrapped in corn husk tight,\nSteamed to fluffy, pure delight.",
+                ingredients: [
+                    "4 cups masa harina",
+                    "2 cups lard or vegetable shortening",
+                    "4 cups chicken broth",
+                    "2 tsp baking powder",
+                    "1 tsp salt",
+                    "Corn husks, soaked",
+                    "For filling: chicken in green sauce, pork in red sauce, or cheese with rajas"
+                ],
+                steps: [
+                    "Beat lard until fluffy; mix in masa gradually.",
+                    "Add broth until dough floats in water test.",
+                    "Spread masa on husks; add filling; fold.",
+                    "Steam for 1.5 hours until husk peels clean."
+                ],
+                region: "Nationwide",
+                heat: "Varies"
+            }
+            // Add 15+ more recipes...
+        };
+
+        // Modal functions
+        function showRecipe(recipeId) {
+            const recipe = recipes[recipeId];
+            document.getElementById('modal-title').textContent = recipe.title;
+            document.getElementById('modal-subtitle').textContent = recipe.subtitle;
+            document.getElementById('modal-poem').innerHTML = recipe.poem.replace(/\n/g, '<br>');
+            
+            // Populate ingredients
+            const ingredientsList = document.getElementById('modal-ingredients');
+            ingredientsList.innerHTML = recipe.ingredients.map(ing => `<li>${ing}</li>`).join('');
+            
+            // Populate steps
+            const stepsList = document.getElementById('modal-steps');
+            stepsList.innerHTML = recipe.steps.map(step => `<li>${step}</li>`).join('');
+            
+            // Show modal
+            document.getElementById('recipeModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('recipeModal').style.display = "none";
+        }
+
+        // Close modal if clicked outside
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('recipeModal')) {
+                closeModal();
+            }
+        };
+    </script>
+</body>
+</html>
